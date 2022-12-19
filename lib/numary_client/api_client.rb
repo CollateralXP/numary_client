@@ -4,7 +4,7 @@ module NumaryClient
       Thread.current[:numary_client__api_client] ||= new(NumaryClient.configuration)
     end
 
-    def initialize(configuration)
+    private def initialize(configuration)
       @configuration = configuration
 
       @connection = Net::HTTP.new(@configuration.uri.host, @configuration.uri.port)
@@ -23,11 +23,21 @@ module NumaryClient
       JSON.parse(response.body)
     end
 
+    def post(path, body, query = {})
+      path += "?#{URI.encode_www_form(query)}" if query.any?
+
+      request = build_request(:post, path, body: true)
+
+      response = @connection.request(request, body.to_json)
+
+      JSON.parse(response.body)
+    end
+
     private
 
-    def build_request(method_name, path, body = nil)
+    def build_request(method_name, path, body: false)
       request = Net::HTTPGenericRequest.new(method_name.to_s.upcase,
-                                            body ? true : false,
+                                            body,
                                             true,
                                             path,
                                             { 'Content-type' => 'application/json' })
