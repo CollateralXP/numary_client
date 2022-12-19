@@ -24,6 +24,20 @@ NumaryClient.configure do |config|
 end
 ```
 
+Supported operations are:
+
+```ruby
+NumaryClient.info # {"data"=>{"server"=>"numary-ledger", "version"=>"1.8.1", "config"=>{"storage"=>{"driver"=>"postgres", "ledgers"=>["quickstart"]}}}}
+
+ledger = NumaryClient::Ledger.new('quickstart')
+ledger.stats
+ledger.accounts({ page_size:, address:, after:, metadata:, balance:, balance_operator:, pagination_token: })
+ledger.balances({ address:, after:, pagination_token: })
+ledger.aggregate_balances({ address: })
+ledger.execute(plain, vars = {}, options = {})
+```
+
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

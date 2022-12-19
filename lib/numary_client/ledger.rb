@@ -8,8 +8,8 @@ module NumaryClient
       ApiClient.current_client.get("/#{name}/stats")
     end
 
-    def accounts
-      ApiClient.current_client.get("/#{name}/accounts")
+    def accounts(query = {})
+      ApiClient.current_client.get("/#{name}/accounts", query)
     end
 
     def balances(query = {})
