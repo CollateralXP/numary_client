@@ -1,16 +1,9 @@
+# frozen_string_literal: true
+
 module NumaryClient
   class ApiClient
     def self.current_client
       Thread.current[:numary_client__api_client] ||= new(NumaryClient.configuration)
-    end
-
-    private def initialize(configuration)
-      @configuration = configuration
-
-      @connection = Net::HTTP.new(@configuration.uri.host, @configuration.uri.port)
-      @connection.use_ssl = @configuration.uri.scheme == 'https'
-      @connection.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      @connection.keep_alive_timeout = 30
     end
 
     def get(path, query = {})
@@ -34,6 +27,15 @@ module NumaryClient
     end
 
     private
+
+    def initialize(configuration)
+      @configuration = configuration
+
+      @connection = Net::HTTP.new(@configuration.uri.host, @configuration.uri.port)
+      @connection.use_ssl = @configuration.uri.scheme == 'https'
+      @connection.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      @connection.keep_alive_timeout = 30
+    end
 
     def build_request(method_name, path, body: false)
       request = Net::HTTPGenericRequest.new(method_name.to_s.upcase,

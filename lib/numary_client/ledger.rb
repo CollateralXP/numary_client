@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module NumaryClient
   class Ledger
     def initialize(name)
@@ -21,7 +23,9 @@ module NumaryClient
     end
 
     def execute(plain, vars = {}, options = {})
-      ApiClient.current_client.post("/#{name}/script", { plain:, vars:, **options }.compact)
+      args = { plain: plain, vars: vars, **options }.compact
+
+      ApiClient.current_client.post("/#{name}/script", args)
     end
 
     private

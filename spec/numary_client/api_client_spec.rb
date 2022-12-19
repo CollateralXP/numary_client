@@ -2,7 +2,7 @@
 
 RSpec.describe NumaryClient::ApiClient do
   describe '#get' do
-    subject { described_class.current_client.get('/_info') }
+    subject(:response) { described_class.current_client.get('/_info') }
 
     before do
       stub_request(:get, 'http://localhost:3068/_info')
@@ -10,12 +10,14 @@ RSpec.describe NumaryClient::ApiClient do
     end
 
     it 'returns server info' do
-      expect(subject['data']['server']).to eq('numary-ledger')
+      expect(response['data']['server']).to eq('numary-ledger')
     end
   end
 
   describe '#post' do
-    subject { described_class.current_client.post('/collateralxp/script', { plain: plain }) }
+    subject(:response) do
+      described_class.current_client.post('/collateralxp/script', { plain: plain })
+    end
 
     let(:plain) do
       <<~PLAIN
@@ -33,7 +35,7 @@ RSpec.describe NumaryClient::ApiClient do
     end
 
     it 'posts successfuly' do
-      expect(subject['data']['result']).to eq(2)
+      expect(response['data']['result']).to eq(2)
     end
   end
 end

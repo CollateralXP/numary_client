@@ -7,7 +7,7 @@ RSpec.describe NumaryClient do
 
   describe '.configure' do
     it 'yields configuration' do
-      expect { |b| NumaryClient.configure(&b) }.to yield_with_args(NumaryClient.configuration)
+      expect { |b| described_class.configure(&b) }.to yield_with_args(described_class.configuration)
     end
   end
 end
